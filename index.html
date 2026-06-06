@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)file:///G:/My%20Drive/Golf/Fore!Strike%20App/index_v1.6.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style data-merge-styles="true"></style>
+
+<style data-merge-styles="true"></style><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fore!Shot Practice App</title>
+
+<style>
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b3d2e;color:#fff;margin:0;padding:20px}
+body.flash-green{animation:flashGreen .15s ease-in-out}
+body.flash-red{animation:flashRed .15s ease-in-out}
+
+@keyframes flashGreen{from{background:#0b3d2e}to{background:#145a43}}
+@keyframes flashRed{from{background:#0b3d2e}to{background:#6b2a2a}}
+
+.card{background:#145a43;border-radius:14px;padding:20px;max-width:460px;margin:0 auto;box-shadow:0 10px 25px rgba(0,0,0,.3)}
+h1,h3{text-align:center;margin-bottom:10px}
+
+.pill-row{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px}
+.pill-btn{background:#1c7c5b;border:none;padding:10px 20px;border-radius:999px;font-weight:800;color:#fff;cursor:pointer;white-space:nowrap;font-size:20px}
+.pill-btn.active{background:#2ecc71;color:#000}
+.pill-btn:disabled{cursor:default;opacity:1}
+.range-speed{display:flex;align-items:center;gap:2px;background:#1c7c5b;padding:6px;border-radius:999px}
+.range-speed-value{min-width:74px;text-align:center;font-size:18px;font-weight:800}
+.range-temp-value{min-width:68px}
+.range-temp-stepper{gap:0;padding:6px 4px}
+.range-speed-btn{border:none;border-radius:999px;background:#2ecc71;color:#000;font-size:22px;font-weight:800;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 #1e9e54}
+.mode-card{margin-bottom:14px;padding:12px;border-radius:12px;background:#0e4f3a}
+.mode-row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;width:100%}
+.mode-row.equal-buttons{flex-wrap:nowrap}
+.mode-row.equal-buttons .mode-btn{flex:1;min-width:0}
+.mode-copy{font-size:15px;opacity:.9}
+.mode-btn{width:100%;display:block;border:none;border-radius:12px;padding:10px 20px;font-size:20px;font-weight:800;cursor:pointer;background:#8a8a8a;color:#000;white-space:normal;line-height:1.15;text-align:center;box-shadow:0 4px 0 #666}
+.mode-btn.active{background:#2ecc71;box-shadow:0 4px 0 #1e9e54}
+.mode-btn.target-set-btn{background:#2ecc71;box-shadow:0 4px 0 #1e9e54}
+.mode-btn.target-set-btn.range-active{background:#1d5b86;color:#fff;box-shadow:0 5px 0 #154462}
+.mode-btn:disabled{cursor:default;opacity:1}
+.mode-target{margin:10px 0 14px;padding:10px;border-radius:10px;background:#1c7c5b;font-size:24px;font-weight:800;text-align:center}
+
+.shot-ring{width:324px;height:194px;position:relative;margin:14px auto 10px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr .7fr;overflow:hidden;border-radius:44px 30px 24px 52px;clip-path:polygon(8% 0,100% 28%,100% 100%,4% 100%,0 96%,0 10%,2% 3%);background:linear-gradient(180deg,rgba(255,255,255,.62) 0%,rgba(255,255,255,.16) 20%,rgba(0,0,0,.08) 100%),repeating-linear-gradient(180deg,transparent 0 17px,rgba(102,112,122,.22) 17px 19px),linear-gradient(145deg,#f8fbfd 0%,#e0e7ee 24%,#c0cad4 58%,#f5f8fb 100%);border:6px solid #d2dbe3;box-shadow:inset 0 0 0 2px rgba(255,255,255,.6),inset 0 -12px 16px rgba(84,95,107,.24),0 14px 28px rgba(0,0,0,.28)}
+
+.shot-ring::before,.shot-ring::after{content:"";position:absolute;pointer-events:none}
+.shot-ring::before{left:25.92px;top:-3px;width:303px;height:6px;background:#d2dbe3;border-radius:999px;transform-origin:left center;transform:rotate(10.33deg);z-index:3}
+.shot-ring::after{inset:0;background:
+ linear-gradient(rgba(48,55,64,.78),rgba(48,55,64,.78)) 50% 0/2px 100% no-repeat,
+ linear-gradient(rgba(48,55,64,.78),rgba(48,55,64,.78)) 0 58.824%/100% 2px no-repeat;z-index:4}
+
+.miss-wedge{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,rgba(166,176,186,.08) 100%);cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;color:#1d242b;font-size:20px;line-height:1.05;text-transform:uppercase;letter-spacing:.06em;text-shadow:0 1px 0 rgba(255,255,255,.72);overflow:hidden}
+.miss-wedge:hover{filter:brightness(1.1)}
+.miss-wedge:active{transform:scale(.97) translateY(3px);filter:brightness(.95)}
+
+.miss-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;text-align:center}
+.miss-label span{font-size:18px;letter-spacing:.08em}
+.miss-label span.toe-label{transform:translateX(-18px)}
+.miss-label span.heel-label{transform:translateX(18px)}
+
+button:active{transform:translateY(3px) scale(.98);box-shadow:0 2px 0 rgba(0,0,0,.35)!important}
+
+.miss-topleft{grid-column:1;grid-row:1;border-top-left-radius:42px 34px;clip-path:inset(0 round 42px 0 0 0)}
+.miss-topright{grid-column:2;grid-row:1;border-top-right-radius:26px 20px;clip-path:inset(0 round 0 26px 0 0)}
+.miss-bottomleft{grid-column:1;grid-row:2;border-bottom-left-radius:48px 38px;clip-path:inset(0 round 0 0 0 48px)}
+.miss-bottomright{grid-column:2;grid-row:2;border-bottom-right-radius:28px 22px;clip-path:inset(0 round 0 0 28px 0)}
+
+.miss-topleft,.miss-topright,.miss-bottomleft,.miss-bottomright{justify-content:center;padding-top:0;padding-bottom:0}
+.miss-topleft .miss-label,.miss-topright .miss-label{transform:translateY(18px)}
+
+.made-center{position:absolute;inset:0;z-index:5;pointer-events:none}
+
+.made-inner{width:110px;height:110px;border-radius:50%;background:#2ecc71;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:21px;font-weight:800;color:#000;box-shadow:3px 0 0 #1e9e54,0 3px 0 #1e9e54,0 10px 20px rgba(0,0,0,.35);border-bottom:3px solid #1e9e54;border-right:3px solid #1e9e54;cursor:pointer;text-align:center;line-height:1.05;position:absolute;top:58.824%;left:50%;transform:translate(-50%,-50%);z-index:5;pointer-events:auto;padding:0 8px}
+.made-inner:active{transform:translate(-50%,-50%) translateY(3px) scale(.97);box-shadow:1px 0 0 #1e9e54,0 1px 0 #1e9e54,0 6px 12px rgba(0,0,0,.35)}
+
+.stats{text-align:center;font-size:18px;margin-top:20px}
+.stats p{margin:6px 0}
+
+.badge{margin-top:10px;padding:10px;border-radius:10px;background:#0e4f3a;font-size:20px;font-weight:800}
+.badge.manual-badge{font-size:20px;font-weight:800}
+.badge.random-badge{background:#1d5b86;color:#fff}
+.badge-content{text-align:center}
+.random-total-line{font-weight:400}
+.mishit-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;width:100%;margin-top:10px}
+.mishit-btn{width:100%;min-height:58px;display:flex;align-items:center;justify-content:center;color:#000;border:none;border-radius:12px;padding:12px 12px;font-size:20px;font-weight:800;line-height:1.1;box-shadow:0 5px 0 rgba(0,0,0,.25),0 10px 18px rgba(0,0,0,.25);cursor:pointer}
+.skull-btn{background:#f4a261;box-shadow:0 5px 0 #c57f3d,0 10px 18px rgba(0,0,0,.25)}
+.duff-btn{background:#e9c46a;box-shadow:0 5px 0 #b89445,0 10px 18px rgba(0,0,0,.25)}
+.shank-btn{background:#8b5a2b;color:#fff;box-shadow:0 6px 0 #5f3d1c,0 10px 18px rgba(0,0,0,.25)}
+
+.history-card{padding:10px;background:#1c7c5b;border-radius:10px;cursor:pointer}
+.history-wrapper{margin-bottom:10px}
+.accordion{display:none;margin-top:8px;padding:10px;background:#0e4f3a;border-radius:10px}
+.subtle{opacity:.75;font-size:14px;margin-left:6px}
+</style>
+<script id="gopher-installed" style="display:none;"></script><script id="gopher-installed" style="display:none;"></script></head>
+
+<body class="">
+
+<div class="card">
+
+<div class="mode-card">
+<div class="mode-row equal-buttons">
+<button id="practiceModeBtn" class="mode-btn active" onclick="togglePracticeMode()">Random<br>Mode On</button>
+<button id="targetSetBtn" class="mode-btn target-set-btn range-active" onclick="toggleTargetSetMode()">Range<br>Mode On</button>
+</div>
+</div>
+
+<div id="clubRow" class="pill-row" style="justify-content: center; flex-direction: column; align-items: center; overflow-x: visible;"><div style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%;"><button class="pill-btn" disabled="">Wind</button><div class="range-speed"><button class="range-speed-btn">-</button><div class="range-speed-value">0 mph</div><button class="range-speed-btn">+</button></div></div><div style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%;"><button class="pill-btn" disabled="">Temp</button><div class="range-speed range-temp-stepper"><button class="range-speed-btn">-</button><div class="range-speed-value range-temp-value">70°F</div><button class="range-speed-btn">+</button></div></div></div>
+<div id="distanceRow" class="pill-row" style="justify-content: center;"><button class="pill-btn active">4h</button></div>
+<div id="modeTarget" class="mode-target">Random Shot: 4h - 212y</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+
+<div class="shot-ring">
+
+<div class="miss-wedge miss-topleft" onclick="recordMissed(&#39;highToe&#39;)"><div class="miss-label"><span class="toe-label">High</span><span class="toe-label">Toe</span></div></div>
+<div class="miss-wedge miss-topright" onclick="recordMissed(&#39;highHeel&#39;)"><div class="miss-label"><span class="heel-label">High</span><span class="heel-label">Heel</span></div></div>
+<div class="miss-wedge miss-bottomleft" onclick="recordMissed(&#39;lowToe&#39;)"><div class="miss-label"><span class="toe-label">Low</span><span class="toe-label">Toe</span></div></div>
+<div class="miss-wedge miss-bottomright" onclick="recordMissed(&#39;lowHeel&#39;)"><div class="miss-label"><span class="heel-label">Low</span><span class="heel-label">Heel</span></div></div>
+
+<div class="made-center">
+<div class="made-inner" onclick="event.stopPropagation();recordMade();">SWEET SPOT</div>
+</div>
+
+</div>
+</div>
+
+<div class="mishit-row">
+<button class="mishit-btn duff-btn" onclick="recordDuff()">💩 Duff</button>
+<button class="mishit-btn shank-btn" onclick="recordShank()">🤬 Shank</button>
+<button class="mishit-btn skull-btn" onclick="recordSkull()">💀 Skull</button>
+</div>
+
+<div class="stats">
+<p>✅ Center: <span id="made">0</span> | ⛔ Off-Center: <span id="missed">0</span></p>
+<p>🚩 Flush %: <span id="percent">0</span>%</p>
+<p><span id="streakTitle">Streak</span>: <span id="streak">0</span> <span id="streakLabel"></span></p>
+<p>Duffs: <span id="duffs">0</span><span id="duffMarks"></span> | Shanks: <span id="shanks">0</span><span id="shankMarks"></span> | Skulls: <span id="skulls">0</span><span id="skullMarks"></span></p>
+</div>
+
+<div id="targetBadge" class="badge random-badge"><div class="badge-content">Current Target:<br>🎯 4h - 212y<br>⛅ 0 mph, 70°F<br><span class="random-total-line">⛳ Total Range Shots: 0</span></div></div>
+
+<div style="display:flex;justify-content:space-between;gap:16px;margin-top:10px;width:100%;">
+<button onclick="newSession()" style="flex:1;background:#0096FF;color:#000;padding:6px 10px;font-size:20px;font-weight:800;border:none;border-radius:12px;box-shadow:0 6px 0 #0074c7,0 14px 22px rgba(0,0,0,.45);cursor:pointer;">🔄️ New Session</button>
+<button onclick="undoShot()" style="flex:1;background:#8a8a8a;color:#000;padding:6px 10px;font-size:20px;font-weight:800;border:none;border-radius:12px;box-shadow:0 6px 0 #666,0 14px 22px rgba(0,0,0,.45);cursor:pointer;">↩️ Undo Last Shot</button>
+</div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+<h3 style="margin:0">📜Session History</h3>
+<select id="historyAction" onchange="handleHistoryAction()" style="background:#1c7c5b;color:#fff;border:none;border-radius:8px;padding:6px 8px;font-weight:700">
+<option value="">Actions</option>
+<option value="export">📤 Export All History</option>
+<option value="delete">📵 Clear All History</option>
+</select>
+</div>
+
+<div id="history"><p style="opacity:.8">No sessions yet.</p></div>
+
+</div>
+
+<script>
+const WEDGE_CLUBS=["62 deg","60 deg","58 deg","56 deg","54 deg","52 deg","UW","48 deg","PW"]
+const WEDGE_DISTANCES=[10,15,20,25,30,35,40,45,50,55,60,65,70,75,80]
+const RANGE_CLUBS=["62 deg","60 deg","58 deg","56 deg","54 deg","52 deg","UW","48 deg","PW","9i","8i","7i","6i","5i","4i","3i","4h","5h","4w","Driver"]
+const RANGE_MANUAL_CLUBS=["62 deg","60 deg","58 deg","56 deg","54 deg","52 deg","UW","48 deg","PW","9i","8i","7i","6i","5i","4i","3i","5h","4h","4w","Driver"]
+const RANGE_DISTANCES=Array.from({length:176},(_,i)=>85+i)
+const RANGE_DISTANCE_MIN=RANGE_DISTANCES[0]
+const RANGE_DISTANCE_MAX=RANGE_DISTANCES[RANGE_DISTANCES.length-1]
+const RANGE_CARRY_YARDAGES={
+ "62 deg":80,
+ "60 deg":85,
+ "58 deg":95,
+ "56 deg":100,
+ "54 deg":105,
+ "52 deg":110,
+ "UW":115,
+ "48 deg":120,
+ "PW":130,
+ "9i":140,
+ "8i":150,
+ "7i":160,
+ "6i":170,
+ "5i":180,
+ "4i":190,
+ "3i":200,
+ "5h":205,
+ "4h":215,
+ "3h":225,
+ "4w":235,
+ "Driver":250
+}
+const RANGE_RECOMMENDATION_WINDOW=5
+const ALL_CLUBS=["62 deg","60 deg","58 deg","56 deg","54 deg","52 deg","UW","48 deg","PW","9i","8i","7i","6i","5i","4i","3i","3h","4h","5h","4w","5w","3w","Driver"]
+const RANGE_WIND_ADJUSTMENTS={
+ wedge:{head:0.02,tail:0.01},
+ iron:{head:0.025,tail:0.015},
+ woodHybrid:{head:0.03,tail:0.025}
+}
+const RANGE_DEFAULT_TEMP=70
+const RANGE_TEMP_MIN=50
+const RANGE_TEMP_MAX=100
+const RANGE_TEMP_STEP=5
+const RANGE_TEMP_ADJUSTMENTS={
+ wedge:0.007,
+ iron:0.01,
+ woodHybrid:0.013
+}
+const ALL_DISTANCES=Array.from({length:RANGE_DISTANCE_MAX-WEDGE_DISTANCES[0]+1},(_,i)=>WEDGE_DISTANCES[0]+i)
+const MODE_CONFIG={
+ wedge:{clubs:WEDGE_CLUBS,distances:WEDGE_DISTANCES,defaultClub:"56 deg",defaultDistance:25},
+ range:{clubs:RANGE_CLUBS,distances:RANGE_DISTANCES,defaultClub:"9i",defaultDistance:135}
+}
+const PGA_PROXIMITY={10:6,15:8,20:10,25:12,30:15,35:18,40:21,45:24,50:27,55:30,60:33,65:36,70:39,75:42,80:45}
+const UP_AND_DOWN={10:67,15:60,20:53,25:46,30:40,35:35,40:30,45:27,50:25,55:23,60:20,65:18,70:16,75:14,80:12}
+const DEFAULT_TARGET_SET_MODE="wedge"
+const TARGET_SET_MODES=["wedge","range"]
+const DEFAULT_CLUB=MODE_CONFIG.wedge.defaultClub
+const PRACTICE_MODE_KEY="shootingPracticeMode"
+const TARGET_SET_MODE_KEY="shootingTargetSetMode"
+const RANGE_WIND_SPEED_KEY="shootingRangeWindSpeed"
+const RANGE_TEMP_KEY="shootingRangeTemp"
+const SHOT_HISTORY_KEY="shootingShotHistory"
+const SELECTION_STATE_KEY="shootingSelectionState"
+
+let currentClub=DEFAULT_CLUB
+let currentDistance=MODE_CONFIG.wedge.defaultDistance
+let stats
+let streaks
+let bestStreaks
+let sessions
+let shotHistory=[]
+let practiceMode="manual"
+let targetSetMode=DEFAULT_TARGET_SET_MODE
+let rangeWindDirection="head"
+let rangeWindSpeed=0
+let rangeTemperature=RANGE_DEFAULT_TEMP
+let modeSelections={
+ wedge:{club:MODE_CONFIG.wedge.defaultClub,distance:MODE_CONFIG.wedge.defaultDistance}
+}
+let rangeSelections={
+ random:{club:MODE_CONFIG.range.defaultClub,distance:MODE_CONFIG.range.defaultDistance},
+ manual:{club:MODE_CONFIG.range.defaultClub,distance:MODE_CONFIG.range.defaultDistance}
+}
+
+const $=(id)=>{
+ const el=document.getElementById(id)
+ if(!el) throw new Error("Missing DOM element: "+id)
+ return el
+}
+
+function getModeConfig(mode=targetSetMode){return MODE_CONFIG[mode]}
+function getSelectableClubs(mode=targetSetMode){return getModeConfig(mode).clubs}
+function getSelectableDistances(mode=targetSetMode){return getModeConfig(mode).distances}
+function isRangeMode(mode=targetSetMode){return mode==="range"}
+function getActivePracticeMode(){return practiceMode}
+function getShotTargetMode(shot){return shot.targetSetMode||"wedge"}
+function inferLegacyTargetSetMode(club,distance){
+ return distance>=RANGE_DISTANCES[0] ? "range" : "wedge"
+}
+function getModeShotHistory(mode,targetMode=targetSetMode){
+ return shotHistory.filter(shot=>(shot.mode||"manual")===mode && getShotTargetMode(shot)===targetMode)
+}
+function getTargetFeet(distance,mode){
+ return mode==="wedge" ? (PGA_PROXIMITY[distance] ?? "") : ""
+}
+function getUpAndDownValue(distance,mode){
+ return mode==="wedge" ? UP_AND_DOWN[distance] : null
+}
+function getSignedWindSpeed(){
+ return rangeWindSpeed
+}
+function formatWindSpeed(){
+ const signed=getSignedWindSpeed()
+ if(signed>0) return "+"+signed+" mph"
+ if(signed<0) return signed+" mph"
+ return "0 mph"
+}
+function formatSignedWindLabel(signed){
+ if(signed>0) return "Head Wind +"+signed+" mph"
+ if(signed<0) return "Tail Wind "+signed+" mph"
+ return "0 mph"
+}
+function formatRangeTemperature(){
+ return rangeTemperature+String.fromCharCode(176)+"F"
+}
+function getShotWindLabel(shot){
+ if(shot && shot.windDirection){
+  const direction=shot.windDirection
+  const speed=Math.abs(Number(shot.windSpeed)||0)
+  const signed=direction==="head" ? speed : -speed
+  return formatSignedWindLabel(signed)
+ }
+ return formatSignedWindLabel(Number(shot && shot.windSpeed) || 0)
+}
+function getShotTempLabel(shot){
+ const temperature=Number(shot && shot.temperature)
+ if(!Number.isFinite(temperature) || temperature<=0) return ""
+ return temperature+String.fromCharCode(176)+"F"
+}
+function uniqueValues(values){
+ return Array.from(new Set(values.filter(Boolean)))
+}
+function getRangeWindSummary(shots,club,distance){
+ if(!Array.isArray(shots)) return ""
+ const labels=uniqueValues(shots
+  .filter(shot=>getShotTargetMode(shot)==="range" && shot.club===club && shot.distance===distance)
+  .map(getShotWindLabel))
+ return labels.join(" | ")
+}
+function getRangeWindSummaryForClub(shots,club){
+ if(!Array.isArray(shots)) return ""
+ const labels=uniqueValues(shots
+  .filter(shot=>getShotTargetMode(shot)==="range" && shot.club===club)
+  .map(getShotWindLabel))
+ return labels.join(" | ")
+}
+function getRangeWindSummaryForSession(shots){
+ if(!Array.isArray(shots)) return ""
+ const labels=uniqueValues(shots
+  .filter(shot=>getShotTargetMode(shot)==="range")
+  .map(getShotWindLabel))
+ return labels.join(" | ")
+}
+function getRangeTempSummary(shots,club,distance){
+ if(!Array.isArray(shots)) return ""
+ const labels=uniqueValues(shots
+  .filter(shot=>getShotTargetMode(shot)==="range" && shot.club===club && shot.distance===distance)
+  .map(getShotTempLabel))
+ return labels.join(" | ")
+}
+function getRangeTempSummaryForClub(shots,club){
+ if(!Array.isArray(shots)) return ""
+ const labels=uniqueValues(shots
+  .filter(shot=>getShotTargetMode(shot)==="range" && shot.club===club)
+  .map(getShotTempLabel))
+ return labels.join(" | ")
+}
+function getRangeTempSummaryForSession(shots){
+ if(!Array.isArray(shots)) return ""
+ const labels=uniqueValues(shots
+  .filter(shot=>getShotTargetMode(shot)==="range")
+  .map(getShotTempLabel))
+ return labels.join(" | ")
+}
+function getModeLabel(hasRange,hasWedge){
+ if(hasRange && hasWedge) return "Mixed"
+ if(hasRange) return "Range"
+ return "Wedge"
+}
+function hasRangeLabel(label){return label==="Range" || label==="Mixed"}
+function hasWedgeLabel(label){return label==="Wedge" || label==="Mixed"}
+function getRangeClubCategory(club){
+ if(["62 deg","60 deg","58 deg","56 deg","54 deg","52 deg","UW","48 deg","PW"].includes(club)) return "wedge"
+ if(["9i","8i","7i","6i","5i","4i","3i"].includes(club)) return "iron"
+ return "woodHybrid"
+}
+function getAdjustedRangeCarry(club){
+ const baseCarry=RANGE_CARRY_YARDAGES[club]||0
+ if(!baseCarry) return baseCarry
+
+ const category=getRangeClubCategory(club)
+ let adjustedCarry=baseCarry
+
+ if(rangeWindSpeed){
+  const steps=Math.abs(rangeWindSpeed)/5
+  const windRates=RANGE_WIND_ADJUSTMENTS[category]
+  if(windRates){
+   if(rangeWindSpeed>0){
+    adjustedCarry=Math.max(0,adjustedCarry*(1-windRates.head*steps))
+   }else if(rangeWindSpeed<0){
+    adjustedCarry=adjustedCarry*(1+windRates.tail*steps)
+   }
+  }
+ }
+
+ if(rangeTemperature!==RANGE_DEFAULT_TEMP){
+  const tempSteps=(rangeTemperature-RANGE_DEFAULT_TEMP)/RANGE_TEMP_STEP
+  const tempRate=RANGE_TEMP_ADJUSTMENTS[category]||0
+  adjustedCarry=adjustedCarry*(1+tempRate*tempSteps)
+ }
+
+ return Math.max(0,adjustedCarry)
+}
+function clampRangeDistance(distance){
+ return Math.max(RANGE_DISTANCE_MIN,Math.min(RANGE_DISTANCE_MAX,Math.round(distance)))
+}
+function getManualRangeTargetDistance(club=currentClub){
+ const adjustedCarry=getAdjustedRangeCarry(club)
+ const fallbackCarry=RANGE_CARRY_YARDAGES[club]||MODE_CONFIG.range.defaultDistance
+ return Math.round(adjustedCarry||fallbackCarry)
+}
+function bucketHasShots(statsMap,targetMode,club,distances){
+ return distances.some(d=>{
+  const bucket=statsMap && statsMap[targetMode] && statsMap[targetMode][club] && statsMap[targetMode][club][d]
+  return !!bucket && ((bucket.made||0)+(bucket.missed||0)>0)
+ })
+}
+function getClubRangeModeLabel(statsMap,club){
+ return getModeLabel(
+  bucketHasShots(statsMap,"range",club,ALL_DISTANCES),
+  bucketHasShots(statsMap,"wedge",club,ALL_DISTANCES)
+ )
+}
+function getSessionRangeModeLabel(statsMap){
+ const hasRange=ALL_CLUBS.some(club=>bucketHasShots(statsMap,"range",club,ALL_DISTANCES))
+ const hasWedge=ALL_CLUBS.some(club=>bucketHasShots(statsMap,"wedge",club,ALL_DISTANCES))
+ return getModeLabel(hasRange,hasWedge)
+}
+function getRangeEligibleClubs(distance=currentDistance){
+ return RANGE_CLUBS.filter(club=>Math.abs(getAdjustedRangeCarry(club)-distance)<=RANGE_RECOMMENDATION_WINDOW)
+}
+function getRecommendedRangeClub(distance=currentDistance){
+ const eligible=getRangeEligibleClubs(distance)
+ if(eligible.length){
+  return eligible.slice().sort((a,b)=>{
+   const diffA=Math.abs(getAdjustedRangeCarry(a)-distance)
+   const diffB=Math.abs(getAdjustedRangeCarry(b)-distance)
+   if(diffA!==diffB) return diffA-diffB
+   return (RANGE_CARRY_YARDAGES[a]||0)-(RANGE_CARRY_YARDAGES[b]||0)
+  })[0]
+ }
+
+ return RANGE_CLUBS.slice().sort((a,b)=>{
+  const diffA=Math.abs(getAdjustedRangeCarry(a)-distance)
+  const diffB=Math.abs(getAdjustedRangeCarry(b)-distance)
+  if(diffA!==diffB) return diffA-diffB
+  return (RANGE_CARRY_YARDAGES[a]||0)-(RANGE_CARRY_YARDAGES[b]||0)
+ })[0]
+}
+function getDisplayedRangeClubs(distance=currentDistance){
+ const eligible=getRangeEligibleClubs(distance)
+ return eligible.length ? eligible : [getRecommendedRangeClub(distance)]
+}
+function refreshRangeRecommendation(){
+ if(!isRangeMode()) return
+ if(getActivePracticeMode()==="manual"){
+  currentDistance=getManualRangeTargetDistance(currentClub)
+  rangeSelections.manual={club:currentClub,distance:currentDistance}
+  syncCurrentSelection()
+  return
+ }
+ const eligible=getRangeEligibleClubs(currentDistance)
+ if(eligible.length===1){
+  currentClub=eligible[0]
+  rangeSelections.random.club=currentClub
+ }
+ rangeSelections.random.distance=currentDistance
+ syncCurrentSelection()
+}
+function adjustWindSpeed(delta){
+ rangeWindSpeed=Math.max(-25,Math.min(25,rangeWindSpeed+delta))
+ persistLiveState()
+ refreshRangeRecommendation()
+}
+function adjustRangeTemperature(delta){
+ rangeTemperature=Math.max(RANGE_TEMP_MIN,Math.min(RANGE_TEMP_MAX,rangeTemperature+delta))
+ persistLiveState()
+ refreshRangeRecommendation()
+}
+
+const MISS_KEYS=["highToe","highHeel","lowToe","lowHeel"]
+const LEGACY_MISS_KEY_MAP={longLeft:"highToe",longRight:"highHeel",shortLeft:"lowToe",shortRight:"lowHeel"}
+const MISS_LABELS={highToe:"High Toe",highHeel:"High Heel",lowToe:"Low Toe",lowHeel:"Low Heel"}
+
+function normalizeMissKey(key){
+ if(MISS_KEYS.includes(key)) return key
+ return LEGACY_MISS_KEY_MAP[key]||null
+}
+
+function createMissDir(){
+ return {highToe:0,highHeel:0,lowToe:0,lowHeel:0}
+}
+
+function normalizeMissDir(missDir){
+ const normalized=createMissDir()
+ if(!missDir || typeof missDir!=="object") return normalized
+ MISS_KEYS.forEach(key=>{normalized[key]=Number(missDir[key])||0})
+ Object.keys(LEGACY_MISS_KEY_MAP).forEach(legacyKey=>{
+  const mappedKey=LEGACY_MISS_KEY_MAP[legacyKey]
+  normalized[mappedKey]+=Number(missDir[legacyKey])||0
+ })
+ return normalized
+}
+
+function getMissCount(missDir,key){
+ const missKey=normalizeMissKey(key)
+ return missKey ? (Number(missDir && missDir[missKey])||0) : 0
+}
+
+function accumulateMissDir(target,missDir){
+ const normalized=normalizeMissDir(missDir)
+ MISS_KEYS.forEach(key=>{target[key]+=normalized[key]})
+ return target
+}
+
+function getMissCsvHeaders(){
+ return MISS_KEYS.map(key=>MISS_LABELS[key])
+}
+
+function getMissCsvValues(missDir){
+ const normalized=normalizeMissDir(missDir)
+ return MISS_KEYS.map(key=>normalized[key])
+}
+
+function formatMissSummary(missDir){
+ const normalized=normalizeMissDir(missDir)
+ return "Misses - "+MISS_LABELS.highToe+": "+normalized.highToe+" | "+MISS_LABELS.highHeel+": "+normalized.highHeel+" | "+MISS_LABELS.lowToe+": "+normalized.lowToe+" | "+MISS_LABELS.lowHeel+": "+normalized.lowHeel
+}
+
+function createStatBucket(){
+ return {made:0,missed:0,duffs:0,shanks:0,skulls:0,missDir:createMissDir()}
+}
+
+function createDistanceMap(factory){
+ const map={}
+ ALL_DISTANCES.forEach(d=>{map[d]=factory()})
+ return map
+}
+
+function createClubDistanceMap(factory){
+ const map={}
+ ALL_CLUBS.forEach(club=>{map[club]=createDistanceMap(factory)})
+ return map
+}
+
+function createModeMap(factory){
+ const map={}
+ TARGET_SET_MODES.forEach(mode=>{map[mode]=createClubDistanceMap(factory)})
+ return map
+}
+
+function hasModeKeys(obj){
+ return !!obj && TARGET_SET_MODES.some(mode=>obj[mode] && typeof obj[mode]==="object")
+}
+
+function hasClubKeys(obj){
+ return !!obj && ALL_CLUBS.some(club=>obj[club] && typeof obj[club]==="object")
+}
+
+function migrateLegacyMap(obj,factory){
+ const map=createModeMap(factory)
+ if(!obj || typeof obj!=="object") return map
+
+ if(hasModeKeys(obj)){
+  TARGET_SET_MODES.forEach(mode=>{
+   ALL_CLUBS.forEach(club=>{
+    ALL_DISTANCES.forEach(d=>{
+     if(obj[mode] && obj[mode][club] && obj[mode][club][d]!=null) map[mode][club][d]=obj[mode][club][d]
+    })
+   })
+  })
+  return map
+ }
+
+ if(hasClubKeys(obj)){
+  ALL_CLUBS.forEach(club=>{
+   ALL_DISTANCES.forEach(d=>{
+    if(obj[club] && obj[club][d]!=null){
+     const mode=inferLegacyTargetSetMode(club,d)
+     map[mode][club][d]=obj[club][d]
+    }
+   })
+  })
+  return map
+ }
+
+ WEDGE_DISTANCES.forEach(d=>{
+  if(obj[d]!=null) map.wedge[DEFAULT_CLUB][d]=obj[d]
+ })
+ return map
+}
+
+function ensureStatsShape(obj){
+ const map=migrateLegacyMap(obj,createStatBucket)
+ TARGET_SET_MODES.forEach(mode=>{
+  ALL_CLUBS.forEach(club=>{
+   ALL_DISTANCES.forEach(d=>{
+    const bucket=map[mode][club][d]||{}
+    map[mode][club][d]={
+     made:Number(bucket.made)||0,
+     missed:Number(bucket.missed)||0,
+     duffs:Number(bucket.duffs)||0,
+     shanks:Number(bucket.shanks)||0,
+     skulls:Number(bucket.skulls)||0,
+     missDir:normalizeMissDir(bucket.missDir)
+    }
+   })
+  })
+ })
+ return map
+}
+
+function ensureCounterShape(obj){
+ const map=migrateLegacyMap(obj,()=>0)
+ TARGET_SET_MODES.forEach(mode=>{
+  ALL_CLUBS.forEach(club=>{
+   ALL_DISTANCES.forEach(d=>{
+    map[mode][club][d]=Number(map[mode][club][d])||0
+   })
+  })
+ })
+ return map
+}
+
+function defaultStats(){return ensureStatsShape({})}
+function defaultCounters(){return ensureCounterShape({})}
+
+function loadStats(){try{return ensureStatsShape(JSON.parse(localStorage.getItem("shootingStats")))}catch{return defaultStats()}}
+function saveStats(){localStorage.setItem("shootingStats",JSON.stringify(stats))}
+
+function loadStreaks(){try{return ensureCounterShape(JSON.parse(localStorage.getItem("shootingStreaks")))}catch{return defaultCounters()}}
+function saveStreaks(){localStorage.setItem("shootingStreaks",JSON.stringify(streaks))}
+
+function loadBestStreaks(){try{return ensureCounterShape(JSON.parse(localStorage.getItem("shootingBestStreaks")))}catch{return defaultCounters()}}
+function saveBestStreaks(){localStorage.setItem("shootingBestStreaks",JSON.stringify(bestStreaks))}
+
+function loadPracticeMode(){
+ try{
+  const saved=localStorage.getItem(PRACTICE_MODE_KEY)
+  return saved==="random" ? "random" : "manual"
+ }catch{
+  return "manual"
+ }
+}
+
+function savePracticeMode(){
+ localStorage.setItem(PRACTICE_MODE_KEY,practiceMode)
+}
+
+function loadTargetSetMode(){
+ try{
+  const saved=localStorage.getItem(TARGET_SET_MODE_KEY)
+  return TARGET_SET_MODES.includes(saved) ? saved : DEFAULT_TARGET_SET_MODE
+ }catch{
+  return DEFAULT_TARGET_SET_MODE
+ }
+}
+
+function saveTargetSetMode(){
+ localStorage.setItem(TARGET_SET_MODE_KEY,targetSetMode)
+}
+
+function loadRangeWindSpeed(){
+ try{
+  const saved=Number(localStorage.getItem(RANGE_WIND_SPEED_KEY))
+  if(!Number.isFinite(saved)) return 0
+  return Math.max(-25,Math.min(25,saved))
+ }catch{
+  return 0
+ }
+}
+
+function saveRangeWindSpeed(){
+ localStorage.setItem(RANGE_WIND_SPEED_KEY,rangeWindSpeed)
+}
+
+function loadRangeTemperature(){
+ try{
+  const saved=Number(localStorage.getItem(RANGE_TEMP_KEY))
+  if(!Number.isFinite(saved)) return RANGE_DEFAULT_TEMP
+  return Math.max(RANGE_TEMP_MIN,Math.min(RANGE_TEMP_MAX,saved))
+ }catch{
+  return RANGE_DEFAULT_TEMP
+ }
+}
+
+function saveRangeTemperature(){
+ localStorage.setItem(RANGE_TEMP_KEY,rangeTemperature)
+}
+
+function normalizeSelectionState(saved){
+ const wedge=saved && saved.wedge ? saved.wedge : {}
+ const range=saved && saved.range ? saved.range : {}
+ const randomRange=range && range.random ? range.random : {}
+ const manualRange=range && range.manual ? range.manual : {}
+ return {
+  wedge:{
+   club:WEDGE_CLUBS.includes(wedge.club) ? wedge.club : MODE_CONFIG.wedge.defaultClub,
+   distance:WEDGE_DISTANCES.includes(Number(wedge.distance)) ? Number(wedge.distance) : MODE_CONFIG.wedge.defaultDistance
+  },
+  range:{
+   random:{
+    club:RANGE_CLUBS.includes(randomRange.club) ? randomRange.club : MODE_CONFIG.range.defaultClub,
+    distance:RANGE_DISTANCES.includes(Number(randomRange.distance)) ? Number(randomRange.distance) : MODE_CONFIG.range.defaultDistance
+   },
+   manual:{
+    club:RANGE_CLUBS.includes(manualRange.club) ? manualRange.club : MODE_CONFIG.range.defaultClub,
+    distance:RANGE_DISTANCES.includes(Number(manualRange.distance)) ? Number(manualRange.distance) : MODE_CONFIG.range.defaultDistance
+   }
+  }
+ }
+}
+
+function loadSelectionState(){
+ try{
+  return normalizeSelectionState(JSON.parse(localStorage.getItem(SELECTION_STATE_KEY)))
+ }catch{
+  return normalizeSelectionState(null)
+ }
+}
+
+function saveSelectionState(){
+ localStorage.setItem(SELECTION_STATE_KEY,JSON.stringify({
+  wedge:modeSelections.wedge,
+  range:rangeSelections
+ }))
+}
+
+function persistLiveState(){
+ saveStats()
+ saveStreaks()
+ saveBestStreaks()
+ savePracticeMode()
+ saveTargetSetMode()
+ saveRangeWindSpeed()
+ saveRangeTemperature()
+ saveShotHistory()
+ saveSelectionState()
+}
+
+function getStreakEmojis(v){if(v>=10)return"Flaming Streak";if(v>=7)return"Hot Streak";if(v>=5)return"Strong Streak";if(v>=3)return"Building Streak";if(v>=1)return"Streak";return"Streak"}
+
+function normalizeSession(session){
+ const safeSession=session||{}
+ return {
+  date:safeSession.date||new Date().toISOString(),
+  stats:ensureStatsShape(safeSession.stats),
+  bestStreaks:ensureCounterShape(safeSession.bestStreaks),
+  shots:Array.isArray(safeSession.shots)?safeSession.shots:[],
+  summary:safeSession.summary||summarizeStats(ensureStatsShape(safeSession.stats))
+ }
+}
+
+function loadSessions(){
+ try{
+  return (JSON.parse(localStorage.getItem("shootingSessions"))||[]).map(normalizeSession)
+ }catch{
+  return []
+ }
+}
+function saveSessions(){localStorage.setItem("shootingSessions",JSON.stringify(sessions))}
+function loadShotHistory(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(SHOT_HISTORY_KEY))
+  return Array.isArray(saved) ? saved : []
+ }catch{
+  return []
+ }
+}
+function saveShotHistory(){localStorage.setItem(SHOT_HISTORY_KEY,JSON.stringify(shotHistory))}
+
+function getStatsBucket(statsMap,mode,club,distance){return statsMap[mode][club][distance]}
+function getCurrentStats(){return getStatsBucket(stats,targetSetMode,currentClub,currentDistance)}
+function getCurrentStreak(){return streaks[targetSetMode][currentClub][currentDistance]||0}
+function getCurrentBestStreak(){return bestStreaks[targetSetMode][currentClub][currentDistance]||0}
+function formatPercent(value){return Number.isInteger(value)?value.toString():value.toFixed(1)}
+function formatClubLabel(club){
+ if(club==="Driver") return "D"
+ return club.replace(/ deg\b/g,String.fromCharCode(176))
+}
+
+function summarizeShotResults(history){
+ let made=0
+ let missed=0
+ let duffs=0
+ let shanks=0
+ let skulls=0
+
+ history.forEach(shot=>{
+  if(shot.type==="made"){
+   made++
+   return
+  }
+
+  missed++
+  if(shot.type==="duff") duffs++
+  if(shot.type==="shank") shanks++
+  if(shot.type==="skull") skulls++
+ })
+
+ return {
+  made:made,
+  missed:missed,
+  duffs:duffs,
+  shanks:shanks,
+  skulls:skulls,
+  total:made+missed
+ }
+}
+
+function summarizeShotSequence(history){
+ let streak=0
+ let best=0
+
+ history.forEach(shot=>{
+  if(shot.type==="made"){
+   streak++
+   if(streak>best) best=streak
+  }else{
+   streak=0
+  }
+ })
+
+ return {streak:streak,best:best}
+}
+
+function summarizeStats(statsMap){
+ let totalMade=0
+ let totalMissed=0
+ TARGET_SET_MODES.forEach(mode=>{
+  ALL_CLUBS.forEach(club=>{
+   ALL_DISTANCES.forEach(d=>{
+    totalMade+=statsMap[mode][club][d].made||0
+    totalMissed+=statsMap[mode][club][d].missed||0
+   })
+  })
+ })
+ const totalShots=totalMade+totalMissed
+ return {
+  made:totalMade,
+  missed:totalMissed,
+  total:totalShots,
+  pct:totalShots?Math.round(totalMade/totalShots*100):0
+ }
+}
+
+function setTitle(){
+ return
+}
+
+function renderPracticeMode(){
+ const btn=$("practiceModeBtn")
+ const target=$("modeTarget")
+ const targetModeBtn=$("targetSetBtn")
+ const activePracticeMode=getActivePracticeMode()
+ const rangeActive=isRangeMode()
+ const isRandom=activePracticeMode==="random"
+
+ btn.innerHTML=isRandom ? "Random<br>Mode On" : "Manual<br>Mode On"
+ btn.className="mode-btn"+(isRandom?" active":"")
+
+ targetModeBtn.innerHTML=rangeActive ? "Range<br>Mode On" : "Wedge<br>Mode On"
+ targetModeBtn.className="mode-btn target-set-btn"+(rangeActive?" range-active":"")
+
+ target.textContent=rangeActive
+  ? (isRandom ? "Random Shot: " : "Current Shot: ")+formatClubLabel(currentClub)+" - "+currentDistance+"y"
+  : (isRandom ? "Random Shot: " : "Current Shot: ")+formatClubLabel(currentClub)+" - "+currentDistance+"y"
+}
+
+function buildClubRow(){
+ const r=$("clubRow")
+ r.innerHTML=""
+ const rangeMode=isRangeMode()
+ if(rangeMode){
+  r.style.justifyContent="center"
+  r.style.flexDirection="column"
+  r.style.alignItems="center"
+  r.style.overflowX="visible"
+
+  const windRow=document.createElement("div")
+  windRow.style.display="flex"
+  windRow.style.gap="8px"
+  windRow.style.alignItems="center"
+  windRow.style.justifyContent="center"
+  windRow.style.flexWrap="wrap"
+  windRow.style.width="100%"
+
+  const windLabel=document.createElement("button")
+  windLabel.className="pill-btn"
+  windLabel.textContent="Wind"
+  windLabel.disabled=true
+  windRow.appendChild(windLabel)
+
+  const speedWrap=document.createElement("div")
+  speedWrap.className="range-speed"
+
+  const minusBtn=document.createElement("button")
+  minusBtn.className="range-speed-btn"
+  minusBtn.textContent="-"
+  minusBtn.onclick=()=>adjustWindSpeed(-5)
+
+  const speedValue=document.createElement("div")
+  speedValue.className="range-speed-value"
+  speedValue.textContent=formatWindSpeed()
+
+  const plusBtn=document.createElement("button")
+  plusBtn.className="range-speed-btn"
+  plusBtn.textContent="+"
+  plusBtn.onclick=()=>adjustWindSpeed(5)
+
+  speedWrap.appendChild(minusBtn)
+  speedWrap.appendChild(speedValue)
+  speedWrap.appendChild(plusBtn)
+  windRow.appendChild(speedWrap)
+
+  const tempRow=document.createElement("div")
+  tempRow.style.display="flex"
+  tempRow.style.gap="8px"
+  tempRow.style.alignItems="center"
+  tempRow.style.justifyContent="center"
+  tempRow.style.flexWrap="wrap"
+  tempRow.style.width="100%"
+
+  const tempLabel=document.createElement("button")
+  tempLabel.className="pill-btn"
+  tempLabel.textContent="Temp"
+  tempLabel.disabled=true
+  tempRow.appendChild(tempLabel)
+
+  const tempWrap=document.createElement("div")
+  tempWrap.className="range-speed range-temp-stepper"
+
+  const tempMinusBtn=document.createElement("button")
+  tempMinusBtn.className="range-speed-btn"
+  tempMinusBtn.textContent="-"
+  tempMinusBtn.onclick=()=>adjustRangeTemperature(-RANGE_TEMP_STEP)
+
+  const tempValue=document.createElement("div")
+  tempValue.className="range-speed-value range-temp-value"
+  tempValue.textContent=formatRangeTemperature()
+
+  const tempPlusBtn=document.createElement("button")
+  tempPlusBtn.className="range-speed-btn"
+  tempPlusBtn.textContent="+"
+  tempPlusBtn.onclick=()=>adjustRangeTemperature(RANGE_TEMP_STEP)
+
+  tempWrap.appendChild(tempMinusBtn)
+  tempWrap.appendChild(tempValue)
+  tempWrap.appendChild(tempPlusBtn)
+  tempRow.appendChild(tempWrap)
+
+  r.appendChild(windRow)
+  r.appendChild(tempRow)
+  return
+ }
+
+  r.style.justifyContent=""
+  r.style.flexDirection=""
+  r.style.alignItems=""
+  r.style.overflowX=""
+ getSelectableClubs().forEach(club=>{
+  const b=document.createElement("button")
+  b.className="pill-btn"+(club===currentClub?" active":"")
+  b.textContent=formatClubLabel(club)
+  b.onclick=()=>setClub(club)
+  r.appendChild(b)
+ })
+}
+
+function buildDistanceRow(){
+ const r=$("distanceRow")
+ r.innerHTML=""
+
+ if(isRangeMode()){
+  if(getActivePracticeMode()==="manual"){
+   r.style.justifyContent=""
+   RANGE_MANUAL_CLUBS.forEach(club=>{
+    const b=document.createElement("button")
+    b.className="pill-btn"+(club===currentClub?" active":"")
+    b.textContent=formatClubLabel(club)
+    b.onclick=()=>setClub(club)
+    r.appendChild(b)
+   })
+   return
+  }
+
+  r.style.justifyContent="center"
+  const clubs=getDisplayedRangeClubs()
+  clubs.forEach((club,index)=>{
+   const b=document.createElement("button")
+   b.className="pill-btn"+(club===currentClub?" active":"")
+   b.textContent=formatClubLabel(club)
+   b.onclick=()=>setClub(club)
+   r.appendChild(b)
+  })
+  return
+ }
+
+ r.style.justifyContent=""
+
+ getSelectableDistances().forEach(d=>{
+  const b=document.createElement("button")
+  b.className="pill-btn"+(d===currentDistance?" active":"")
+  b.textContent=d+"y"
+  b.onclick=()=>setDistance(d)
+  r.appendChild(b)
+ })
+}
+
+function syncCurrentSelection(){
+ setTitle()
+ buildClubRow()
+ buildDistanceRow()
+ updateStats()
+ renderPracticeMode()
+ persistLiveState()
+}
+
+function setClub(club){
+ currentClub=club
+ if(isRangeMode()){
+  if(getActivePracticeMode()==="manual"){
+   currentDistance=getManualRangeTargetDistance(club)
+   rangeSelections.manual={club:club,distance:currentDistance}
+  }else{
+   rangeSelections.random.club=club
+  }
+ }else{
+  modeSelections.wedge.club=club
+ }
+ syncCurrentSelection()
+}
+
+function setDistance(d){
+ if(isRangeMode()) return
+ currentDistance=d
+ modeSelections.wedge.distance=d
+ syncCurrentSelection()
+}
+
+function setTarget(club,distance){
+ currentClub=club
+ currentDistance=distance
+ if(isRangeMode()){
+  if(getActivePracticeMode()==="manual"){
+   currentDistance=getManualRangeTargetDistance(club)
+   rangeSelections.manual={club:club,distance:currentDistance}
+  }else{
+   rangeSelections.random={club:club,distance:distance}
+  }
+ }else{
+  modeSelections.wedge={club:club,distance:distance}
+ }
+ syncCurrentSelection()
+}
+
+function pickRandomRangeDistance(){
+ const distances=getSelectableDistances()
+ if(!distances.length) return
+
+ let next=currentDistance
+ if(distances.length===1){
+  next=distances[0]
+ }else{
+  while(next===currentDistance){
+   next=distances[Math.floor(Math.random()*distances.length)]
+  }
+ }
+
+ currentDistance=next
+ currentClub=getRecommendedRangeClub(next)
+ rangeSelections.random.distance=next
+ rangeSelections.random.club=currentClub
+ syncCurrentSelection()
+}
+
+function pickRandomTarget(){
+ if(isRangeMode()){
+  pickRandomRangeDistance()
+  return
+ }
+
+ const combos=[]
+ getSelectableClubs().forEach(club=>{
+  getSelectableDistances().forEach(distance=>{
+   if(club!==currentClub || distance!==currentDistance) combos.push({club,distance})
+  })
+ })
+ if(!combos.length) return
+ const next=combos[Math.floor(Math.random()*combos.length)]
+ setTarget(next.club,next.distance)
+}
+
+function togglePracticeMode(){
+ practiceMode=practiceMode==="manual" ? "random" : "manual"
+ persistLiveState()
+ if(isRangeMode()){
+  if(practiceMode==="random"){
+   pickRandomTarget()
+   return
+  }
+
+  rangeSelections.manual={
+   club:RANGE_CLUBS.includes(currentClub) ? currentClub : MODE_CONFIG.range.defaultClub,
+   distance:currentDistance
+  }
+  currentClub=rangeSelections.manual.club
+  currentDistance=rangeSelections.manual.distance
+  syncCurrentSelection()
+  return
+ }
+
+ if(practiceMode==="random"){
+  pickRandomTarget()
+  return
+ }
+ syncCurrentSelection()
+}
+
+function toggleTargetSetMode(){
+ if(isRangeMode()){
+  targetSetMode="wedge"
+  persistLiveState()
+  currentClub=modeSelections.wedge.club
+  currentDistance=modeSelections.wedge.distance
+  syncCurrentSelection()
+  return
+ }
+
+ targetSetMode="range"
+ persistLiveState()
+ if(getActivePracticeMode()==="manual"){
+  const manualSelection=rangeSelections.manual
+  currentClub=RANGE_CLUBS.includes(manualSelection.club) ? manualSelection.club : MODE_CONFIG.range.defaultClub
+  currentDistance=getManualRangeTargetDistance(currentClub)
+  rangeSelections.manual={club:currentClub,distance:currentDistance}
+  syncCurrentSelection()
+  return
+ }
+
+ const randomSelection=rangeSelections.random
+ currentClub=RANGE_CLUBS.includes(randomSelection.club) ? randomSelection.club : MODE_CONFIG.range.defaultClub
+ currentDistance=getSelectableDistances().includes(randomSelection.distance) ? randomSelection.distance : MODE_CONFIG.range.defaultDistance
+ rangeSelections.random={club:currentClub,distance:currentDistance}
+ pickRandomTarget()
+}
+
+function advancePracticeTarget(){
+ if(getActivePracticeMode()==="random") pickRandomTarget()
+}
+
+function updateStats(){
+ const activePracticeMode=getActivePracticeMode()
+ const isRandom=activePracticeMode==="random"
+ const rangeActive=isRangeMode()
+ const badge=$("targetBadge")
+ const modeHistory=getModeShotHistory(activePracticeMode,targetSetMode)
+ const modeStats=summarizeShotResults(modeHistory)
+ const shotSummary=summarizeShotSequence(modeHistory)
+ const made=modeStats.made
+ const missed=modeStats.missed
+ const duffs=modeStats.duffs
+ const shanks=modeStats.shanks
+ const skulls=modeStats.skulls
+ const total=modeStats.total
+ const pct=total?Math.round(made/total*100):0
+
+ $("made").textContent=made
+ $("missed").textContent=missed
+ $("percent").textContent=pct
+ $("duffs").textContent=duffs
+ $("duffMarks").textContent=duffs ? " "+"🧻".repeat(duffs) : ""
+ $("shanks").textContent=shanks
+ $("shankMarks").textContent=shanks ? " "+"😡".repeat(shanks) : ""
+ $("skulls").textContent=skulls
+ $("skullMarks").textContent=skulls ? " "+"☠️".repeat(skulls) : ""
+
+ const s=isRandom ? shotSummary.streak : getCurrentStreak()
+ let fireCount=0
+ if(s>=10) fireCount=5
+ else if(s>=7) fireCount=4
+ else if(s>=5) fireCount=3
+ else if(s>=3) fireCount=2
+ else if(s>=1) fireCount=1
+
+ $("streakTitle").textContent=getStreakEmojis(s)
+ $("streak").textContent=s
+ $("streakLabel").textContent="🔥".repeat(fireCount)
+
+ if(rangeActive){
+  badge.className="badge random-badge"
+  badge.innerHTML='<div class="badge-content">Current Target:<br>🎯 '+formatClubLabel(currentClub)+' - '+currentDistance+'y<br>⛅ '+formatSignedWindLabel(getSignedWindSpeed())+', '+formatRangeTemperature()+'<br><span class="random-total-line">⛳ Total Range Shots: '+total+'</span></div>'
+ }else if(isRandom){
+  badge.className="badge random-badge"
+  badge.innerHTML='<div class="badge-content">Current Target:<br>🎯 '+formatClubLabel(currentClub)+' - '+currentDistance+'y ('+getTargetFeet(currentDistance,"wedge")+' ft)<br><span class="random-total-line">⛳ Total Random Shots: '+total+'</span></div>'
+ }else{
+  badge.className="badge manual-badge"
+  badge.innerHTML='<div class="badge-content">🎯 Target: '+getTargetFeet(currentDistance,"wedge")+' ft<br>🥇 Up and Down: '+formatPercent(getUpAndDownValue(currentDistance,"wedge"))+'%<br><span class="random-total-line">⛳ Total Manual Shots: '+total+'</span></div>'
+ }
+}
+
+function recordMade(){
+ const activePracticeMode=getActivePracticeMode()
+ const st=getCurrentStats()
+ st.made++
+ streaks[targetSetMode][currentClub][currentDistance]++
+ if(getCurrentStreak()>getCurrentBestStreak()) bestStreaks[targetSetMode][currentClub][currentDistance]=getCurrentStreak()
+ shotHistory.push({type:"made",club:currentClub,distance:currentDistance,mode:activePracticeMode,targetSetMode:targetSetMode,windDirection:null,windSpeed:isRangeMode()?rangeWindSpeed:null,temperature:isRangeMode()?rangeTemperature:null})
+ document.body.classList.remove("flash-red")
+ document.body.classList.add("flash-green")
+ setTimeout(()=>document.body.classList.remove("flash-green"),150)
+ persistLiveState()
+ advancePracticeTarget()
+ updateStats()
+}
+
+function recordMissed(dir){
+ const missKey=normalizeMissKey(dir)
+ if(!missKey) return
+ const activePracticeMode=getActivePracticeMode()
+ const st=getCurrentStats()
+ st.missDir=normalizeMissDir(st.missDir)
+ st.missed++
+ st.missDir[missKey]++
+ streaks[targetSetMode][currentClub][currentDistance]=0
+ shotHistory.push({type:"missed",club:currentClub,distance:currentDistance,dir:missKey,mode:activePracticeMode,targetSetMode:targetSetMode,windDirection:null,windSpeed:isRangeMode()?rangeWindSpeed:null,temperature:isRangeMode()?rangeTemperature:null})
+ document.body.classList.remove("flash-green")
+ document.body.classList.add("flash-red")
+ setTimeout(()=>document.body.classList.remove("flash-red"),150)
+ persistLiveState()
+ advancePracticeTarget()
+ updateStats()
+}
+
+function recordDuff(){
+ const activePracticeMode=getActivePracticeMode()
+ const st=getCurrentStats()
+ st.missed++
+ st.duffs++
+ streaks[targetSetMode][currentClub][currentDistance]=0
+ shotHistory.push({type:"duff",club:currentClub,distance:currentDistance,mode:activePracticeMode,targetSetMode:targetSetMode,windDirection:null,windSpeed:isRangeMode()?rangeWindSpeed:null,temperature:isRangeMode()?rangeTemperature:null})
+ document.body.classList.remove("flash-green")
+ document.body.classList.add("flash-red")
+ setTimeout(()=>document.body.classList.remove("flash-red"),150)
+ persistLiveState()
+ advancePracticeTarget()
+ updateStats()
+}
+
+function recordShank(){
+ const activePracticeMode=getActivePracticeMode()
+ const st=getCurrentStats()
+ st.missed++
+ st.shanks++
+ streaks[targetSetMode][currentClub][currentDistance]=0
+ shotHistory.push({type:"shank",club:currentClub,distance:currentDistance,mode:activePracticeMode,targetSetMode:targetSetMode,windDirection:null,windSpeed:isRangeMode()?rangeWindSpeed:null,temperature:isRangeMode()?rangeTemperature:null})
+ document.body.classList.remove("flash-green")
+ document.body.classList.add("flash-red")
+ setTimeout(()=>document.body.classList.remove("flash-red"),150)
+ persistLiveState()
+ advancePracticeTarget()
+ updateStats()
+}
+
+function recordSkull(){
+ const activePracticeMode=getActivePracticeMode()
+ const st=getCurrentStats()
+ st.missed++
+ st.skulls++
+ streaks[targetSetMode][currentClub][currentDistance]=0
+ shotHistory.push({type:"skull",club:currentClub,distance:currentDistance,mode:activePracticeMode,targetSetMode:targetSetMode,windDirection:null,windSpeed:isRangeMode()?rangeWindSpeed:null,temperature:isRangeMode()?rangeTemperature:null})
+ document.body.classList.remove("flash-green")
+ document.body.classList.add("flash-red")
+ setTimeout(()=>document.body.classList.remove("flash-red"),150)
+ persistLiveState()
+ advancePracticeTarget()
+ updateStats()
+}
+
+function newSession(){
+ const summary=summarizeStats(stats)
+ const archivedSession=normalizeSession({
+  date:new Date().toISOString(),
+  stats:JSON.parse(JSON.stringify(stats)),
+  bestStreaks:JSON.parse(JSON.stringify(bestStreaks)),
+  shots:JSON.parse(JSON.stringify(shotHistory)),
+  summary:summary
+ })
+ sessions.push(archivedSession)
+ saveSessions()
+ sessions=loadSessions()
+ stats=defaultStats()
+ streaks=defaultCounters()
+ bestStreaks=defaultCounters()
+ shotHistory=[]
+ persistLiveState()
+ if(getActivePracticeMode()==="random"){
+  pickRandomTarget()
+ }else{
+  syncCurrentSelection()
+ }
+ renderHistory()
+}
+
+function recomputeHistoryFor(targetMode,club,distance){
+ let streak=0
+ let best=0
+
+ shotHistory.forEach(shot=>{
+  if(getShotTargetMode(shot)!==targetMode || shot.club!==club || shot.distance!==distance) return
+  if(shot.type==="made"){
+   streak++
+   if(streak>best) best=streak
+  }else{
+   streak=0
+  }
+ })
+
+ streaks[targetMode][club][distance]=streak
+ bestStreaks[targetMode][club][distance]=best
+}
+
+function undoShot(){
+ const activePracticeMode=getActivePracticeMode()
+ let undoIndex=-1
+ for(let i=shotHistory.length-1;i>=0;i--){
+  const shot=shotHistory[i]
+  if((shot.mode||"manual")===activePracticeMode && getShotTargetMode(shot)===targetSetMode){
+   undoIndex=i
+   break
+  }
+ }
+ if(undoIndex===-1) return
+
+ const last=shotHistory.splice(undoIndex,1)[0]
+ const shotTargetMode=getShotTargetMode(last)
+ const st=stats[shotTargetMode][last.club][last.distance]
+
+ if(last.type==="made" && st.made>0){
+  st.made--
+  if(streaks[shotTargetMode][last.club][last.distance]>0) streaks[shotTargetMode][last.club][last.distance]--
+ }
+
+if(last.type==="missed" && st.missed>0){
+  const missKey=normalizeMissKey(last.dir)
+  st.missed--
+  st.missDir=normalizeMissDir(st.missDir)
+  if(missKey && st.missDir[missKey]>0) st.missDir[missKey]--
+ }
+
+ if(last.type==="duff" && st.missed>0){
+  st.missed--
+  if(st.duffs>0) st.duffs--
+ }
+
+ if(last.type==="shank" && st.missed>0){
+  st.missed--
+  if(st.shanks>0) st.shanks--
+ }
+
+ if(last.type==="skull" && st.missed>0){
+  st.missed--
+  if(st.skulls>0) st.skulls--
+ }
+
+ setTarget(last.club,last.distance)
+ recomputeHistoryFor(shotTargetMode,last.club,last.distance)
+ persistLiveState()
+ updateStats()
+ renderPracticeMode()
+}
+
+function handleHistoryAction(){
+ const sel=$("historyAction")
+ const v=sel.value
+ sel.value=""
+ if(v==="delete"){
+  if(confirm("Delete all session history and reset all stats?")){
+   sessions=[]
+   stats=defaultStats()
+   streaks=defaultCounters()
+   bestStreaks=defaultCounters()
+   shotHistory=[]
+   saveSessions()
+   persistLiveState()
+   updateStats()
+   renderHistory()
+  }
+ }
+ if(v==="export"){exportHistoryCSV()}
+}
+
+function exportHistoryCSV(){
+ const rows=[["Session","Date","Club","Yardage","Mode","Wind","Temp","Target ft","Center","Off-Center","Flush %","Up and Down %",...getMissCsvHeaders(),"Duffs","Shanks","Skulls","Total Mis-Hits","Best Streak"]]
+ const csvEscape=value=>{
+  const text=String(value ?? "")
+  return /[",\n]/.test(text) ? '"'+text.replace(/"/g,'""')+'"' : text
+ }
+ const pushRow=values=>rows.push(values.map(csvEscape).join(","))
+ const fmt=(count,pct)=>count+" ("+pct+"%)"
+ const exportSessions=loadSessions().slice()
+ const liveSummary=summarizeStats(stats)
+ if(liveSummary.total>0){
+  exportSessions.push(normalizeSession({
+   date:new Date().toISOString(),
+   stats:JSON.parse(JSON.stringify(stats)),
+   bestStreaks:JSON.parse(JSON.stringify(bestStreaks)),
+   shots:JSON.parse(JSON.stringify(shotHistory)),
+   summary:liveSummary
+  }))
+ }
+
+ let grandMade=0
+ let grandMissed=0
+ let grandMiss=createMissDir()
+ let grandDuffs=0
+ let grandShanks=0
+ let grandSkulls=0
+
+ exportSessions.forEach((s,idx)=>{
+  const date=new Date(s.date).toLocaleDateString()
+  let sessionMade=0
+  let sessionMissed=0
+  let sessionMiss=createMissDir()
+  let sessionDuffs=0
+  let sessionShanks=0
+  let sessionSkulls=0
+
+  ALL_CLUBS.forEach(club=>{
+   let clubMade=0
+   let clubMissed=0
+   let clubMiss=createMissDir()
+   let clubDuffs=0
+   let clubShanks=0
+   let clubSkulls=0
+   let clubBestStreak=0
+
+   TARGET_SET_MODES.forEach(targetMode=>{
+    ALL_DISTANCES.forEach(d=>{
+     const st=s.stats && s.stats[targetMode] && s.stats[targetMode][club] && s.stats[targetMode][club][d]
+     if(!st) return
+
+     const made=st.made||0
+     const missed=st.missed||0
+     const duffs=st.duffs||0
+     const shanks=st.shanks||0
+     const skulls=st.skulls||0
+     const total=made+missed
+     if(!total) return
+
+     const missDir=st.missDir||createMissDir()
+     const pct=Math.round(made/total*100)
+     const targetFeet=getTargetFeet(d,targetMode)
+     const upAndDown=getUpAndDownValue(d,targetMode)
+     const windSummary=targetMode==="range" ? getRangeWindSummary(s.shots,club,d) : ""
+     const tempSummary=targetMode==="range" ? getRangeTempSummary(s.shots,club,d) : ""
+     const bestStreak=((s.bestStreaks && s.bestStreaks[targetMode] && s.bestStreaks[targetMode][club] && s.bestStreaks[targetMode][club][d])||0)
+
+     sessionMade+=made
+     sessionMissed+=missed
+     accumulateMissDir(sessionMiss,missDir)
+     sessionDuffs+=duffs
+     sessionShanks+=shanks
+     sessionSkulls+=skulls
+     clubMade+=made
+     clubMissed+=missed
+     accumulateMissDir(clubMiss,missDir)
+     clubDuffs+=duffs
+     clubShanks+=shanks
+     clubSkulls+=skulls
+     clubBestStreak=Math.max(clubBestStreak,bestStreak)
+
+     pushRow([
+      idx+1,
+      date,
+      formatClubLabel(club),
+      d+"yd",
+      targetMode==="range" ? "Range" : "Wedge",
+      windSummary,
+      tempSummary,
+      targetFeet!=="" ? targetFeet+"ft" : "",
+      made,
+      missed,
+      pct+"%",
+      upAndDown!=null ? formatPercent(upAndDown)+"%" : "",
+      ...getMissCsvValues(missDir),
+      duffs,
+      shanks,
+      skulls,
+      duffs+shanks+skulls,
+      bestStreak
+     ])
+    })
+   })
+
+   const clubShots=clubMade+clubMissed
+   if(!clubShots) return
+
+   const clubPct=Math.round(clubMade/clubShots*100)
+   const clubMissTotal=clubMissed
+   const clubHighToePct=clubMissTotal?Math.round(clubMiss.highToe/clubMissTotal*100):0
+   const clubHighHeelPct=clubMissTotal?Math.round(clubMiss.highHeel/clubMissTotal*100):0
+   const clubLowToePct=clubMissTotal?Math.round(clubMiss.lowToe/clubMissTotal*100):0
+   const clubLowHeelPct=clubMissTotal?Math.round(clubMiss.lowHeel/clubMissTotal*100):0
+   const clubDuffPct=clubMissTotal?Math.round(clubDuffs/clubMissTotal*100):0
+   const clubShankPct=clubMissTotal?Math.round(clubShanks/clubMissTotal*100):0
+   const clubSkullPct=clubMissTotal?Math.round(clubSkulls/clubMissTotal*100):0
+   const clubMisHitTotal=clubDuffs+clubShanks+clubSkulls
+   const clubMisHitPct=clubMissTotal?Math.round(clubMisHitTotal/clubMissTotal*100):0
+
+   pushRow([
+    idx+1,
+    date,
+    formatClubLabel(club),
+    "TOTAL",
+    getClubRangeModeLabel(s.stats,club),
+    "",
+    "",
+    "",
+    clubMade,
+    clubMissed,
+    clubPct+"%",
+    "",
+    fmt(clubMiss.highToe,clubHighToePct),
+    fmt(clubMiss.highHeel,clubHighHeelPct),
+    fmt(clubMiss.lowToe,clubLowToePct),
+    fmt(clubMiss.lowHeel,clubLowHeelPct),
+    fmt(clubDuffs,clubDuffPct),
+    fmt(clubShanks,clubShankPct),
+    fmt(clubSkulls,clubSkullPct),
+    fmt(clubMisHitTotal,clubMisHitPct),
+    clubBestStreak
+   ])
+  })
+
+  const totalShots=sessionMade+sessionMissed
+  const totalPct=totalShots?Math.round(sessionMade/totalShots*100):0
+  const totalMiss=sessionMissed
+  const sessionHighToePct=totalMiss?Math.round(sessionMiss.highToe/totalMiss*100):0
+  const sessionHighHeelPct=totalMiss?Math.round(sessionMiss.highHeel/totalMiss*100):0
+  const sessionLowToePct=totalMiss?Math.round(sessionMiss.lowToe/totalMiss*100):0
+  const sessionLowHeelPct=totalMiss?Math.round(sessionMiss.lowHeel/totalMiss*100):0
+  const duffPct=totalMiss?Math.round(sessionDuffs/totalMiss*100):0
+  const shankPct=totalMiss?Math.round(sessionShanks/totalMiss*100):0
+  const skullPct=totalMiss?Math.round(sessionSkulls/totalMiss*100):0
+  const sessionMisHits=sessionDuffs+sessionShanks+sessionSkulls
+  const sessionMisHitPct=totalMiss?Math.round(sessionMisHits/totalMiss*100):0
+
+  pushRow([
+   idx+1,
+   date,
+   "ALL",
+   "TOTAL",
+   getSessionRangeModeLabel(s.stats),
+   "",
+   "",
+   "",
+   sessionMade,
+   sessionMissed,
+   totalPct+"%",
+   "",
+   fmt(sessionMiss.highToe,sessionHighToePct),
+   fmt(sessionMiss.highHeel,sessionHighHeelPct),
+   fmt(sessionMiss.lowToe,sessionLowToePct),
+   fmt(sessionMiss.lowHeel,sessionLowHeelPct),
+   fmt(sessionDuffs,duffPct),
+   fmt(sessionShanks,shankPct),
+   fmt(sessionSkulls,skullPct),
+   fmt(sessionMisHits,sessionMisHitPct),
+   ""
+  ])
+
+  grandMade+=sessionMade
+  grandMissed+=sessionMissed
+  accumulateMissDir(grandMiss,sessionMiss)
+  grandDuffs+=sessionDuffs
+  grandShanks+=sessionShanks
+  grandSkulls+=sessionSkulls
+ })
+
+ const gShots=grandMade+grandMissed
+ const gPct=gShots?Math.round(grandMade/gShots*100):0
+ const gMissTotal=grandMissed
+ const gHighToePct=gMissTotal?Math.round(grandMiss.highToe/gMissTotal*100):0
+ const gHighHeelPct=gMissTotal?Math.round(grandMiss.highHeel/gMissTotal*100):0
+ const gLowToePct=gMissTotal?Math.round(grandMiss.lowToe/gMissTotal*100):0
+ const gLowHeelPct=gMissTotal?Math.round(grandMiss.lowHeel/gMissTotal*100):0
+ const gDuffPct=gMissTotal?Math.round(grandDuffs/gMissTotal*100):0
+ const gShankPct=gMissTotal?Math.round(grandShanks/gMissTotal*100):0
+ const gSkullPct=gMissTotal?Math.round(grandSkulls/gMissTotal*100):0
+ const grandMisHits=grandDuffs+grandShanks+grandSkulls
+ const gMisHitPct=gMissTotal?Math.round(grandMisHits/gMissTotal*100):0
+ const grandHasRange=exportSessions.some(s=>hasRangeLabel(getSessionRangeModeLabel(s.stats)))
+ const grandHasWedge=exportSessions.some(s=>hasWedgeLabel(getSessionRangeModeLabel(s.stats)))
+
+ pushRow([
+  "GRAND TOTAL",
+  "",
+  "ALL",
+  "ALL",
+  getModeLabel(grandHasRange,grandHasWedge),
+  "",
+  "",
+  "",
+  grandMade,
+  grandMissed,
+  gPct+"%",
+  "",
+  fmt(grandMiss.highToe,gHighToePct),
+  fmt(grandMiss.highHeel,gHighHeelPct),
+  fmt(grandMiss.lowToe,gLowToePct),
+  fmt(grandMiss.lowHeel,gLowHeelPct),
+  fmt(grandDuffs,gDuffPct),
+  fmt(grandShanks,gShankPct),
+  fmt(grandSkulls,gSkullPct),
+  fmt(grandMisHits,gMisHitPct),
+  ""
+ ])
+
+ const csv=rows.join("\n")+"\n"
+ const blob=new Blob([csv],{type:"text/csv"})
+ const url=URL.createObjectURL(blob)
+ const a=document.createElement("a")
+ a.href=url
+ a.download="forestrike-history.csv"
+ a.click()
+ URL.revokeObjectURL(url)
+}
+
+function deleteSession(index){
+ if(!confirm("Delete this session?")) return
+ sessions.splice(index,1)
+ saveSessions()
+ renderHistory()
+}
+
+function renderHistory(){
+ const h=$("history")
+ h.innerHTML=""
+ if(!sessions.length){
+  h.innerHTML='<p style="opacity:.8">No sessions yet.</p>'
+  return
+ }
+
+ sessions.slice().reverse().forEach((s,i)=>{
+  const idx=sessions.length-1-i
+  const wrap=document.createElement("div")
+  wrap.className="history-wrapper"
+
+  const card=document.createElement("div")
+  card.className="history-card"
+
+  const acc=document.createElement("div")
+  acc.className="accordion"
+
+  card.innerHTML="<strong>Session "+(idx+1)+"</strong><br>"+new Date(s.date).toLocaleDateString()+" - "+s.summary.pct+"% ("+s.summary.total+" shots)"
+  card.onclick=()=>{acc.style.display=acc.style.display==="block"?"none":"block"}
+
+  ALL_CLUBS.forEach(club=>{
+   ALL_DISTANCES.forEach(d=>{
+    const st=s.stats && s.stats[club] && s.stats[club][d]
+    if(!st) return
+
+    const tot=(st.made||0)+(st.missed||0)
+    if(!tot) return
+
+    const rowMode=inferTargetSetMode(club,d)
+    const missDir=st.missDir||createMissDir()
+    const pct=Math.round(st.made/tot*100)
+    const upAndDown=getUpAndDownValue(d,rowMode)
+    const targetFeet=getTargetFeet(d,rowMode)
+    const earnedMark=rowMode==="wedge" && pct>upAndDown ? " ⭐" : ""
+    const windSummary=rowMode==="range" ? getRangeWindSummary(s.shots,club,d) : ""
+
+    const row=document.createElement("div")
+    row.innerHTML="<strong>"+formatClubLabel(club)+" - "+d+" yd:</strong> "+st.made+"/"+tot+" ("+pct+"%)"+(rowMode==="wedge" ? " - "+targetFeet+"ft"+earnedMark : " - Range Mode")+
+     (rowMode==="wedge"
+      ? '<br><span class="subtle">Up and Down: '+formatPercent(upAndDown)+'%</span>'
+      : '<br><span class="subtle">Wind: '+(windSummary||"Not recorded")+'</span>')+
+     '<br><span class="subtle">'+formatMissSummary(missDir)+'</span>'+
+     '<br><span class="subtle">Duffs: '+(st.duffs||0)+' | Shanks: '+(st.shanks||0)+' | Skulls: '+(st.skulls||0)+' | Best streak: '+((s.bestStreaks && s.bestStreaks[club] && s.bestStreaks[club][d])||0)+'</span>'
+    acc.appendChild(row)
+   })
+  })
+
+  const delBtn=document.createElement("button")
+  delBtn.textContent="🗑️ Delete Session"
+  delBtn.onclick=e=>{e.stopPropagation();deleteSession(idx)}
+  delBtn.style="display:block;width:100%;margin-top:10px;background:#E34234;color:#000;padding:6px 10px;font-size:20px;font-weight:800;border:none;border-radius:12px;cursor:pointer;"
+
+  acc.appendChild(delBtn)
+  wrap.appendChild(card)
+  wrap.appendChild(acc)
+  h.appendChild(wrap)
+ })
+}
+
+function exportHistoryCSV_legacy(){
+ let csv="Session,Date,Club,Yardage,Mode,Wind,Target ft,Center,Off-Center,Flush %,Up and Down %,"+getMissCsvHeaders().join(",")+",Duffs,Shanks,Skulls,Total Mis-Hits,Best Streak\n"
+
+ let grandMade=0
+ let grandMissed=0
+ let grandMiss=createMissDir()
+
+ const fmt=(count,pct)=>count+" ("+pct+"%)"
+
+ sessions.forEach((s,idx)=>{
+  const date=new Date(s.date).toLocaleDateString()
+  let sessionMade=0
+  let sessionMissed=0
+  let sessionMiss=createMissDir()
+  let sessionDuffs=0
+  let sessionShanks=0
+  let sessionSkulls=0
+
+  ALL_CLUBS.forEach(club=>{
+   let clubMade=0
+   let clubMissed=0
+   let clubMiss=createMissDir()
+   let clubDuffs=0
+   let clubShanks=0
+   let clubSkulls=0
+   let clubBestStreak=0
+
+   TARGET_SET_MODES.forEach(targetMode=>{
+    ALL_DISTANCES.forEach(d=>{
+     const st=s.stats && s.stats[targetMode] && s.stats[targetMode][club] && s.stats[targetMode][club][d]
+     if(!st) return
+
+     const made=st.made||0
+     const missed=st.missed||0
+     const duffs=st.duffs||0
+     const shanks=st.shanks||0
+     const skulls=st.skulls||0
+     const total=made+missed
+     if(!total) return
+
+     const missDir=st.missDir||createMissDir()
+     const pct=Math.round(made/total*100)
+     const targetFeet=getTargetFeet(d,targetMode)
+     const upAndDown=getUpAndDownValue(d,targetMode)
+     const windSummary=targetMode==="range" ? getRangeWindSummary(s.shots,club,d) : ""
+     const tempSummary=targetMode==="range" ? getRangeTempSummary(s.shots,club,d) : ""
+     const bestStreak=((s.bestStreaks && s.bestStreaks[targetMode] && s.bestStreaks[targetMode][club] && s.bestStreaks[targetMode][club][d])||0)
+
+     sessionMade+=made
+     sessionMissed+=missed
+     accumulateMissDir(sessionMiss,missDir)
+     sessionDuffs+=duffs
+     sessionShanks+=shanks
+     sessionSkulls+=skulls
+     clubMade+=made
+     clubMissed+=missed
+     accumulateMissDir(clubMiss,missDir)
+     clubDuffs+=duffs
+     clubShanks+=shanks
+     clubSkulls+=skulls
+     clubBestStreak=Math.max(clubBestStreak,bestStreak)
+
+     csv+=(idx+1)+","+date+","+club+","+d+"yd,"+(targetMode==="range" ? "Range" : "Wedge")+","+'"'+windSummary.replace(/"/g,'""')+'",'+'"'+tempSummary.replace(/"/g,'""')+'",'+(targetFeet!=="" ? targetFeet+"ft" : "")+","+made+","+missed+","+pct+"%,"+(upAndDown!=null ? formatPercent(upAndDown)+"%" : "")+","+
+          getMissCsvValues(missDir).join(",")+","+
+          duffs+","+shanks+","+skulls+",,"+bestStreak+"\n"
+    })
+   })
+
+   const clubShots=clubMade+clubMissed
+   if(!clubShots) return
+
+   const clubPct=Math.round(clubMade/clubShots*100)
+   const clubMissTotal=clubMissed
+   const clubHighToePct=clubMissTotal?Math.round(clubMiss.highToe/clubMissTotal*100):0
+   const clubHighHeelPct=clubMissTotal?Math.round(clubMiss.highHeel/clubMissTotal*100):0
+   const clubLowToePct=clubMissTotal?Math.round(clubMiss.lowToe/clubMissTotal*100):0
+   const clubLowHeelPct=clubMissTotal?Math.round(clubMiss.lowHeel/clubMissTotal*100):0
+   const clubDuffPct=clubMissTotal?Math.round(clubDuffs/clubMissTotal*100):0
+   const clubShankPct=clubMissTotal?Math.round(clubShanks/clubMissTotal*100):0
+   const clubSkullPct=clubMissTotal?Math.round(clubSkulls/clubMissTotal*100):0
+   const clubMisHitTotal=clubDuffs+clubShanks+clubSkulls
+   const clubMisHitPct=clubMissTotal?Math.round(clubMisHitTotal/clubMissTotal*100):0
+   const clubModeLabel=getClubRangeModeLabel(s.stats,club)
+   csv+=(idx+1)+","+date+","+club+",TOTAL,"+clubModeLabel+",,,,"+clubMade+","+clubMissed+","+clubPct+"%,,"+
+        fmt(clubMiss.highToe,clubHighToePct)+","+
+        fmt(clubMiss.highHeel,clubHighHeelPct)+","+
+        fmt(clubMiss.lowToe,clubLowToePct)+","+
+        fmt(clubMiss.lowHeel,clubLowHeelPct)+","+fmt(clubDuffs,clubDuffPct)+","+fmt(clubShanks,clubShankPct)+","+fmt(clubSkulls,clubSkullPct)+","+fmt(clubMisHitTotal,clubMisHitPct)+","+clubBestStreak+"\n"
+  })
+
+  const totalShots=sessionMade+sessionMissed
+  const totalPct=totalShots?Math.round(sessionMade/totalShots*100):0
+  const totalMiss=sessionMissed
+  const sessionHighToePct=totalMiss?Math.round(sessionMiss.highToe/totalMiss*100):0
+  const sessionHighHeelPct=totalMiss?Math.round(sessionMiss.highHeel/totalMiss*100):0
+  const sessionLowToePct=totalMiss?Math.round(sessionMiss.lowToe/totalMiss*100):0
+  const sessionLowHeelPct=totalMiss?Math.round(sessionMiss.lowHeel/totalMiss*100):0
+  const duffPct=totalMiss?Math.round(sessionDuffs/totalMiss*100):0
+  const shankPct=totalMiss?Math.round(sessionShanks/totalMiss*100):0
+  const skullPct=totalMiss?Math.round(sessionSkulls/totalMiss*100):0
+  const sessionMisHits=sessionDuffs+sessionShanks+sessionSkulls
+  const sessionMisHitPct=totalMiss?Math.round(sessionMisHits/totalMiss*100):0
+  const sessionModeLabel=getSessionRangeModeLabel(s.stats)
+
+  csv+=(idx+1)+","+date+",ALL,TOTAL,"+sessionModeLabel+",,,,"+sessionMade+","+sessionMissed+","+totalPct+"%,,"+
+       fmt(sessionMiss.highToe,sessionHighToePct)+","+
+       fmt(sessionMiss.highHeel,sessionHighHeelPct)+","+
+       fmt(sessionMiss.lowToe,sessionLowToePct)+","+
+       fmt(sessionMiss.lowHeel,sessionLowHeelPct)+","+fmt(sessionDuffs,duffPct)+","+fmt(sessionShanks,shankPct)+","+fmt(sessionSkulls,skullPct)+","+fmt(sessionMisHits,sessionMisHitPct)+",\n"
+
+  grandMade+=sessionMade
+  grandMissed+=sessionMissed
+  accumulateMissDir(grandMiss,sessionMiss)
+ })
+
+ const gShots=grandMade+grandMissed
+ const gPct=gShots?Math.round(grandMade/gShots*100):0
+ const grandDuffs=sessions.reduce((total,s)=>{
+  return total+TARGET_SET_MODES.reduce((modeTotal,targetMode)=>{
+   return modeTotal+ALL_CLUBS.reduce((clubTotal,club)=>{
+    return clubTotal+ALL_DISTANCES.reduce((sum,d)=>{
+     const bucket=((((s.stats||{})[targetMode]||{})[club]||{})[d]||{})
+     return sum+(bucket.duffs||0)
+    },0)
+   },0)
+  },0)
+ },0)
+ const grandShanks=sessions.reduce((total,s)=>{
+  return total+TARGET_SET_MODES.reduce((modeTotal,targetMode)=>{
+   return modeTotal+ALL_CLUBS.reduce((clubTotal,club)=>{
+    return clubTotal+ALL_DISTANCES.reduce((sum,d)=>{
+     const bucket=((((s.stats||{})[targetMode]||{})[club]||{})[d]||{})
+     return sum+(bucket.shanks||0)
+    },0)
+   },0)
+  },0)
+ },0)
+ const grandSkulls=sessions.reduce((total,s)=>{
+  return total+TARGET_SET_MODES.reduce((modeTotal,targetMode)=>{
+   return modeTotal+ALL_CLUBS.reduce((clubTotal,club)=>{
+    return clubTotal+ALL_DISTANCES.reduce((sum,d)=>{
+     const bucket=((((s.stats||{})[targetMode]||{})[club]||{})[d]||{})
+     return sum+(bucket.skulls||0)
+    },0)
+   },0)
+  },0)
+ },0)
+ const gMissTotal=grandMissed
+ const gHighToePct=gMissTotal?Math.round(grandMiss.highToe/gMissTotal*100):0
+ const gHighHeelPct=gMissTotal?Math.round(grandMiss.highHeel/gMissTotal*100):0
+ const gLowToePct=gMissTotal?Math.round(grandMiss.lowToe/gMissTotal*100):0
+ const gLowHeelPct=gMissTotal?Math.round(grandMiss.lowHeel/gMissTotal*100):0
+ const gDuffPct=gMissTotal?Math.round(grandDuffs/gMissTotal*100):0
+ const gShankPct=gMissTotal?Math.round(grandShanks/gMissTotal*100):0
+ const gSkullPct=gMissTotal?Math.round(grandSkulls/gMissTotal*100):0
+ const grandMisHits=grandDuffs+grandShanks+grandSkulls
+ const grandMisHitPct=gMissTotal?Math.round(grandMisHits/gMissTotal*100):0
+ const grandHasRange=sessions.some(s=>hasRangeLabel(getSessionRangeModeLabel(s.stats)))
+ const grandHasWedge=sessions.some(s=>hasWedgeLabel(getSessionRangeModeLabel(s.stats)))
+ const grandModeLabel=getModeLabel(grandHasRange,grandHasWedge)
+
+ csv+="GRAND TOTAL,,ALL,ALL,"+grandModeLabel+",,,,"+grandMade+","+grandMissed+","+gPct+"%,,"+
+      fmt(grandMiss.highToe,gHighToePct)+","+
+      fmt(grandMiss.highHeel,gHighHeelPct)+","+
+      fmt(grandMiss.lowToe,gLowToePct)+","+
+      fmt(grandMiss.lowHeel,gLowHeelPct)+","+fmt(grandDuffs,gDuffPct)+","+fmt(grandShanks,gShankPct)+","+fmt(grandSkulls,gSkullPct)+","+fmt(grandMisHits,grandMisHitPct)+",\n"
+
+ const blob=new Blob([csv],{type:"text/csv"})
+ const url=URL.createObjectURL(blob)
+ const a=document.createElement("a")
+ a.href=url
+ a.download="forestrike-history.csv"
+ a.click()
+ URL.revokeObjectURL(url)
+}
+
+function renderHistory(){
+ const h=$("history")
+ h.innerHTML=""
+ if(!sessions.length){
+  h.innerHTML='<p style="opacity:.8">No sessions yet.</p>'
+  return
+ }
+
+ sessions.slice().reverse().forEach((s,i)=>{
+  const idx=sessions.length-1-i
+  const wrap=document.createElement("div")
+  wrap.className="history-wrapper"
+
+  const card=document.createElement("div")
+  card.className="history-card"
+
+  const acc=document.createElement("div")
+  acc.className="accordion"
+
+  card.innerHTML="<strong>Session "+(idx+1)+"</strong><br>"+new Date(s.date).toLocaleDateString()+" - "+s.summary.pct+"% ("+s.summary.total+" shots)"
+  card.onclick=()=>{acc.style.display=acc.style.display==="block"?"none":"block"}
+
+  ALL_CLUBS.forEach(club=>{
+   TARGET_SET_MODES.forEach(targetMode=>{
+    ALL_DISTANCES.forEach(d=>{
+     const st=s.stats && s.stats[targetMode] && s.stats[targetMode][club] && s.stats[targetMode][club][d]
+     if(!st) return
+
+     const tot=(st.made||0)+(st.missed||0)
+     if(!tot) return
+
+     const missDir=st.missDir||createMissDir()
+     const pct=Math.round(st.made/tot*100)
+     const upAndDown=getUpAndDownValue(d,targetMode)
+     const targetFeet=getTargetFeet(d,targetMode)
+     const earnedMark=targetMode==="wedge" && pct>upAndDown ? " ⭐" : ""
+     const windSummary=targetMode==="range" ? getRangeWindSummary(s.shots,club,d) : ""
+     const tempSummary=targetMode==="range" ? getRangeTempSummary(s.shots,club,d) : ""
+     const bestStreak=((s.bestStreaks && s.bestStreaks[targetMode] && s.bestStreaks[targetMode][club] && s.bestStreaks[targetMode][club][d])||0)
+
+     const row=document.createElement("div")
+     row.innerHTML="<strong>"+formatClubLabel(club)+" - "+d+" yd ("+(targetMode==="range" ? "Range" : "Wedge")+"):</strong> "+st.made+"/"+tot+" ("+pct+"%)"+(targetMode==="wedge" ? " - "+targetFeet+"ft"+earnedMark : " - Range Mode")+
+      (targetMode==="wedge"
+       ? '<br><span class="subtle">Up and Down: '+formatPercent(upAndDown)+'%</span>'
+       : '<br><span class="subtle">Wind: '+(windSummary||"Not recorded")+', Temp: '+(tempSummary||"Not recorded")+'</span>')+
+     '<br><span class="subtle">'+formatMissSummary(missDir)+'</span>'+
+     '<br><span class="subtle">Duffs: '+(st.duffs||0)+' | Shanks: '+(st.shanks||0)+' | Skulls: '+(st.skulls||0)+' | Best streak: '+bestStreak+'</span>'
+     acc.appendChild(row)
+    })
+   })
+  })
+
+  const delBtn=document.createElement("button")
+  delBtn.textContent="🗑️ Delete Session"
+  delBtn.onclick=e=>{e.stopPropagation();deleteSession(idx)}
+  delBtn.style="display:block;width:100%;margin-top:10px;background:#E34234;color:#000;padding:6px 10px;font-size:20px;font-weight:800;border:none;border-radius:12px;cursor:pointer;"
+
+  acc.appendChild(delBtn)
+  wrap.appendChild(card)
+  wrap.appendChild(acc)
+  h.appendChild(wrap)
+ })
+}
+
+function initApp(){
+ stats=loadStats()
+ streaks=loadStreaks()
+ bestStreaks=loadBestStreaks()
+ sessions=loadSessions()
+ shotHistory=loadShotHistory()
+ const selectionState=loadSelectionState()
+ modeSelections={wedge:selectionState.wedge}
+ rangeSelections=selectionState.range
+ practiceMode=loadPracticeMode()
+ targetSetMode=loadTargetSetMode()
+ rangeWindSpeed=loadRangeWindSpeed()
+ rangeTemperature=loadRangeTemperature()
+ persistLiveState()
+ if(targetSetMode==="range"){
+  if(practiceMode==="manual"){
+   currentClub=RANGE_CLUBS.includes(rangeSelections.manual.club) ? rangeSelections.manual.club : MODE_CONFIG.range.defaultClub
+   currentDistance=getManualRangeTargetDistance(currentClub)
+   rangeSelections.manual={club:currentClub,distance:currentDistance}
+  }else{
+   currentClub=RANGE_CLUBS.includes(rangeSelections.random.club) ? rangeSelections.random.club : MODE_CONFIG.range.defaultClub
+   currentDistance=getSelectableDistances("range").includes(rangeSelections.random.distance) ? rangeSelections.random.distance : MODE_CONFIG.range.defaultDistance
+   rangeSelections.random={club:currentClub,distance:currentDistance}
+  }
+ }else{
+  currentClub=modeSelections.wedge.club
+  currentDistance=modeSelections.wedge.distance
+ }
+ if(practiceMode==="random"){
+  pickRandomTarget()
+ }else{
+  syncCurrentSelection()
+ }
+ renderHistory()
+ renderPracticeMode()
+}
+
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",initApp)}else{initApp()}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>
