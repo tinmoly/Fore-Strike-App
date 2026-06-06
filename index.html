@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0060)file:///G:/My%20Drive/Golf/Fore!Strike%20App/index_v1.7.html -->
+<!-- saved from url=(0061)file:///G:/My%20Drive/Golf/Fore!Strike%20App/index_v1.71.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style data-merge-styles="true"></style>
 
 <style data-merge-styles="true"></style><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,14 +96,14 @@ button:active{transform:translateY(3px) scale(.98);box-shadow:0 2px 0 rgba(0,0,0
 
 <div class="mode-card">
 <div class="mode-row equal-buttons">
-<button id="practiceModeBtn" class="mode-btn active" onclick="togglePracticeMode()">Random<br>Mode On</button>
+<button id="practiceModeBtn" class="mode-btn" onclick="togglePracticeMode()">Manual<br>Mode On</button>
 <button id="targetSetBtn" class="mode-btn target-set-btn range-active" onclick="toggleTargetSetMode()">Range<br>Mode On</button>
 </div>
 </div>
 
-<div id="clubRow" class="pill-row" style="justify-content: center; flex-direction: column; align-items: center; overflow-x: visible;"><div style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%;"><button class="pill-btn" disabled="">Wind</button><div class="range-speed"><button class="range-speed-btn">-</button><div class="range-speed-value">0 mph</div><button class="range-speed-btn">+</button></div></div><div style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%;"><button class="pill-btn" disabled="">Temp</button><div class="range-speed range-temp-stepper"><button class="range-speed-btn">-</button><div class="range-speed-value range-temp-value">70°F</div><button class="range-speed-btn">+</button></div></div></div>
-<div id="distanceRow" class="pill-row" style="justify-content: center;"><button class="pill-btn active">48°</button></div>
-<div id="modeTarget" class="mode-target">Random Shot: 48° - 122y</div>
+<div id="clubRow" class="pill-row" style="justify-content: center; flex-direction: column; align-items: center; overflow-x: visible;"><div style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%;"><button class="pill-btn" disabled="">Wind</button><div class="range-speed"><button class="range-speed-btn">-</button><div class="range-speed-value">⬇ 25 mph</div><button class="range-speed-btn">+</button></div></div><div style="display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%;"><button class="pill-btn" disabled="">Temp</button><div class="range-speed range-temp-stepper"><button class="range-speed-btn">-</button><div class="range-speed-value range-temp-value">80°F</div><button class="range-speed-btn">+</button></div></div></div>
+<div id="distanceRow" class="pill-row" style=""><button class="pill-btn">62°</button><button class="pill-btn">60°</button><button class="pill-btn">58°</button><button class="pill-btn">56°</button><button class="pill-btn">54°</button><button class="pill-btn active">52°</button><button class="pill-btn">UW</button><button class="pill-btn">48°</button><button class="pill-btn">PW</button><button class="pill-btn">9i</button><button class="pill-btn">8i</button><button class="pill-btn">7i</button><button class="pill-btn">6i</button><button class="pill-btn">5i</button><button class="pill-btn">4i</button><button class="pill-btn">3i</button><button class="pill-btn">5h</button><button class="pill-btn">4h</button><button class="pill-btn">4w</button><button class="pill-btn">D</button></div>
+<div id="modeTarget" class="mode-target">Current Shot: 52° - 100y</div>
 
 <div style="display:flex;flex-direction:column;align-items:center;">
 
@@ -134,7 +134,7 @@ button:active{transform:translateY(3px) scale(.98);box-shadow:0 2px 0 rgba(0,0,0
 <p>Duffs: <span id="duffs">0</span><span id="duffMarks"></span> | Shanks: <span id="shanks">0</span><span id="shankMarks"></span> | Skulls: <span id="skulls">0</span><span id="skullMarks"></span></p>
 </div>
 
-<div id="targetBadge" class="badge random-badge"><div class="badge-content">Current Target:<br>🎯 48° - 122y<br>⛅ 0 mph, 70°F<br><span class="random-total-line">⛳ Total Range Shots: 0</span></div></div>
+<div id="targetBadge" class="badge random-badge"><div class="badge-content">Current Target:<br>🎯 52° - 100y<br>⛅ Head Wind ⬇ 25 mph, 80°F<br><span class="random-total-line">⛳ Total Range Shots: 0</span></div></div>
 
 <div style="display:flex;justify-content:space-between;gap:16px;margin-top:10px;width:100%;">
 <button onclick="newSession()" style="flex:1;background:#0096FF;color:#000;padding:6px 10px;font-size:20px;font-weight:800;border:none;border-radius:12px;box-shadow:0 6px 0 #0074c7,0 14px 22px rgba(0,0,0,.45);cursor:pointer;">🔄️ New Session</button>
@@ -150,7 +150,7 @@ button:active{transform:translateY(3px) scale(.98);box-shadow:0 2px 0 rgba(0,0,0
 </select>
 </div>
 
-<div id="history"><p style="opacity:.8">No sessions yet.</p></div>
+<div id="history"><div class="history-wrapper"><div class="history-card"><strong>Session 1</strong><br>6/6/2026 - 100% (5 shots)</div><div class="accordion"><div><strong>52° - 103 yd (Range):</strong> 5/5 (100%) - Range Mode<br><span class="subtle">Wind: Head Wind ⬇ 20 mph, Temp: 80°F</span><br><span class="subtle">Misses - High Toe: 0 | High Heel: 0 | Low Toe: 0 | Low Heel: 0</span><br><span class="subtle">Duffs: 0 | Shanks: 0 | Skulls: 0 | Best streak: 5</span></div><button style="display: block; width: 100%; margin-top: 10px; background: rgb(227, 66, 52); color: rgb(0, 0, 0); padding: 6px 10px; font-size: 20px; font-weight: 800; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; border-radius: 12px; cursor: pointer;">🗑️ Delete Session</button></div></div></div>
 
 </div>
 
@@ -267,13 +267,13 @@ function getSignedWindSpeed(){
 }
 function formatWindSpeed(){
  const signed=getSignedWindSpeed()
- if(signed>0) return "+"+signed+" mph"
- if(signed<0) return signed+" mph"
+ if(signed>0) return "⬇ "+signed+" mph"
+ if(signed<0) return "⬆ "+Math.abs(signed)+" mph"
  return "0 mph"
 }
 function formatSignedWindLabel(signed){
- if(signed>0) return "Head Wind +"+signed+" mph"
- if(signed<0) return "Tail Wind "+signed+" mph"
+ if(signed>0) return "Head Wind ⬇ "+signed+" mph"
+ if(signed<0) return "Tail Wind ⬆ "+Math.abs(signed)+" mph"
  return "0 mph"
 }
 function formatRangeTemperature(){
